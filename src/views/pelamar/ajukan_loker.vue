@@ -381,33 +381,28 @@ const submitForm = async () => {
 
 <style scoped>
 /* ================= HERO ================= */
-.hero-blue {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20rem;
-  background: linear-gradient(180deg, #2563eb 0%, #eff6ff 40%);
-  border-radius: 0 0 1.5rem 1.5rem;
-  z-index: 0;
-}
 .hero-section {
   position: relative;
   padding-top: 16px;
 }
+
 .header-wrapper {
   position: relative;
   z-index: 1;
   margin: 0 20px;
 }
+
 .title {
   font-size: 1.875rem;
   font-weight: 700;
   color: #ffffff;
+  font-family: 'Poppins', sans-serif;
 }
+
 .subtitle {
   color: #e0e7ff;
   margin-top: 0.5rem;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ================= CARD ================= */
@@ -418,13 +413,20 @@ const submitForm = async () => {
   max-width: 72rem;
   margin: 20px;
   padding: 2rem;
-  border-radius: 18px;
+  border-radius: 1rem;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
   transition: all 0.25s ease;
+  font-family: 'Poppins', sans-serif;
 }
-.card-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
+
+/* ================= HEADER CARD STYLE ================= */
+.header-card {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ================= STEP BAR ================= */
@@ -463,9 +465,9 @@ select,
 textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.75rem; /* agak lebih bulat */
-  border: 1px solid #cbd5e1; /* lebih lembut dari #d1d5db */
-  background: #f9fafb; /* soft putih mirip dashboard */
+  border-radius: 0.75rem;
+  border: 1px solid #cbd5e1;
+  background: #f9fafb;
   transition: all 0.25s ease;
 }
 input:focus,
@@ -483,7 +485,7 @@ textarea:focus {
   margin-top: 2.5rem;
 }
 .btn-prev {
-  background: #f3f4f6; /* soft grey */
+  background: #f3f4f6;
   color: #1f2937;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
