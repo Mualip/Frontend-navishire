@@ -170,7 +170,7 @@ onMounted(loadProfile)
 .hero-blue {
   position: relative;
   width: 100%;
-  height: 20rem;
+  height: 10rem;
   background: linear-gradient(
     180deg,
     #2563eb 0%,
