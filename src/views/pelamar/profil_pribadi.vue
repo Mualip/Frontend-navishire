@@ -1,16 +1,14 @@
 <template>
-  <!-- HERO & HEADER -->
-  <section class="hero-section relative">
-    <div class="hero-blue"></div>
-
-    <header class="header-wrapper relative z-10 px-6 md:px-12 py-10">
+  <!-- HEADER -->
+  <div class="hero-blue w-full rounded-b-2xl">
+    <div class="px-6 py-10 md:py-12 space-y-6 mx-auto max-w-7xl">
       <div>
-        <h1 class="title">Profil Pribadi</h1>
-        <p class="subtitle">Informasi lengkap mengenai data diri pelamar.</p>
+        <h1 class="text-3xl font-bold text-white tracking-tight">Profil Pribadi</h1>
+        <p class="text-white text-sm mt-2">Informasi lengkap mengenai data diri pelamar.</p>
       </div>
 
-      <!-- BUTTON EDIT -->
-      <div class="mt-8 flex justify-end">
+      <!-- BUTTON -->
+      <div class="mt-32 flex justify-end">
         <button
           @click="toggleEdit"
           :disabled="loading"
@@ -19,12 +17,12 @@
           {{ isEditing ? 'Simpan' : 'Edit' }}
         </button>
       </div>
-    </header>
-  </section>
+    </div>
+  </div>
 
   <!-- CARD PROFILE -->
-  <div class="card-wrapper">
-    <h2 class="step-title mb-4">Informasi Pribadi</h2>
+  <div class="bg-white shadow-sm border border-gray-200 rounded-xl p-6 mt-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pribadi</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div
@@ -55,6 +53,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+
+const API_BASE = `${import.meta.env.VITE_API_URL}/api/profile`
 
 interface ProfileData {
   namaLengkap: string
@@ -107,76 +107,79 @@ const profilEditable = ref<ProfileData>({
 const isEditing = ref(false)
 const loading = ref(false)
 
-const toggleEdit = () => {
-  isEditing.value = !isEditing.value
+async function apiFetch(url: string, method: string, body?: unknown) {
+  const token = localStorage.getItem('token')
+  if (!token) throw new Error('TOKEN TIDAK ADA')
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.message || 'API Error')
+  return data
 }
 
-onMounted(() => {
-  // bisa fetch API disini
-})
+const loadProfile = async () => {
+  try {
+    loading.value = true
+    const data = await apiFetch(API_BASE, 'GET')
+    profileFields.forEach((f) => {
+      profilEditable.value[f.key] = data?.[f.key] ?? ''
+    })
+  } catch (err) {
+    console.error('Load profile gagal:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const saveProfile = async () => {
+  try {
+    loading.value = true
+    await apiFetch(API_BASE, 'POST', profilEditable.value)
+    await loadProfile()
+    alert('Profil berhasil disimpan')
+  } catch (err) {
+    console.error('SAVE PROFILE ERROR:', err)
+    if (err instanceof Error) alert(err.message)
+    else alert('Gagal menyimpan profil')
+  } finally {
+    loading.value = false
+  }
+}
+
+const toggleEdit = async () => {
+  if (isEditing.value) {
+    await saveProfile()
+    isEditing.value = false
+  } else {
+    isEditing.value = true
+  }
+}
+
+onMounted(loadProfile)
 </script>
 
 <style scoped>
-/* ================= HERO ================= */
-.hero-section {
-  position: relative;
-}
+/* ===== HERO BLUE BACKGROUND ===== */
 .hero-blue {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20rem; /* tinggi ringkas */
+  position: relative;
+  width: 100%;
+  height: 10rem;
   background: linear-gradient(
     195deg,
-    #1e40af 0%,
-    #2563eb 25%,
-    #3b82f6 50%,
-    #60a5fa 75%,
-    #eff6ff 100%
+    #2563eb 0%,
+    /* biru gelap di atas */ #3b82f6 45%,
+    /* biru medium lebih tebal */ #60a5fa 65%,
+    /* biru terang */ #eff6ff 90% /* biru muda ke bawah */
   );
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   z-index: 0;
-}
-.header-wrapper {
-  position: relative;
-  z-index: 10;
-  max-width: 72rem;
-  margin: 0 auto;
-  color: #ffffff;
-}
-.title {
-  font-size: 1.875rem;
-  font-weight: 700;
-}
-.subtitle {
-  margin-top: 0.5rem;
-  color: #e0e7ff;
-}
-
-/* ================= CARD ================= */
-.card-wrapper {
-  position: relative;
-  z-index: 10;
-  background: #ffffff;
-  max-width: 72rem;
-  margin: -6rem auto 2rem; /* overlap dengan hero */
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
-  transition: all 0.25s ease;
-}
-.card-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
-}
-
-/* ================= STEP TITLE ================= */
-.step-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #1e3a8a;
 }
 </style>
