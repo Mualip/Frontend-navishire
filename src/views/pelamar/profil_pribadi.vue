@@ -170,13 +170,14 @@ onMounted(loadProfile)
 .hero-blue {
   position: relative;
   width: 100%;
-  height: 10rem;
+  height: 10rem; /* tinggi tetap ringkas */
   background: linear-gradient(
     195deg,
-    #2563eb 15%,
-    /* biru gelap di atas */ #3b82f6 35%,
-    /* biru medium lebih tebal */ #60a5fa 60%,
-    /* biru terang */ #eff6ff 90% /* biru muda ke bawah */
+    #1e40af 0%,
+    /* biru gelap lebih tegas */ #2563eb 25%,
+    /* biru medium lebih dominan */ #3b82f6 50%,
+    /* biru terang */ #60a5fa 75%,
+    /* biru terang lebih soft */ #eff6ff 100% /* biru muda ke bawah */
   );
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
