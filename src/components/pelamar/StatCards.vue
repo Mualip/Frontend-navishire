@@ -125,101 +125,162 @@ const badgeClass = computed(() => ({
 </script>
 
 <style scoped>
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+/* ================= HERO ================= */
+.hero-section {
+  position: relative;
+  padding-top: 16px;
 }
 
-.stat-card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.hero-blue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28rem; /* lebih tinggi untuk biru tebal */
+  background: linear-gradient(135deg, #2563eb, #3b82f6); /* gradient tegas */
+  border-radius: 0 0 1.5rem 1.5rem;
+  z-index: 0;
+}
+
+/* HEADER */
+.header-wrapper {
+  position: relative;
+  z-index: 1;
+  margin: 0 20px;
+  padding: 2rem 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.subtitle {
+  color: #e0e7ff;
+  margin-top: 0.5rem;
+}
+
+/* ================= CARD ================= */
+.card-wrapper {
+  position: relative;
+  z-index: 10;
+  background: #ffffff;
+  max-width: 72rem;
+  margin: 20px;
+  padding: 2rem;
+  border-radius: 18px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   transition: 0.25s ease;
 }
 
-.stat-card:hover {
+.card-wrapper:hover {
   transform: translateY(-4px);
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.15);
 }
 
-/* ICON */
-.icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+/* ================= STEP BAR ================= */
+.step-indicator {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: white;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
-.bg-blue {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-}
-.bg-green {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-}
-.bg-purple {
-  background: linear-gradient(135deg, #7c3aed, #a78bfa);
-}
-.bg-orange {
-  background: linear-gradient(135deg, #f97316, #fb923c);
-}
-
-/* TEXT */
-.info span {
-  font-size: 0.75rem;
-  color: #64748b;
-}
-
-.info strong {
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-/* INLINE FIX */
-.info.inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-
-/* BADGE */
-.badge {
-  margin-top: 0.25rem;
-  padding: 0.35rem 0.85rem;
+.step-bar {
+  flex: 1;
+  height: 0.5rem;
+  background: #e5e7eb;
   border-radius: 999px;
+  transition: 0.25s ease;
+}
+
+.step-bar.active {
+  background: #2563eb;
+}
+
+/* ================= STEP TITLE ================= */
+.step-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1e3a8a; /* biru gelap */
+}
+
+/* ================= LABEL & INPUT ================= */
+label {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
+  color: #1e3a8a;
 }
 
-.badge.diterima {
-  background: #dcfce7;
-  color: #166534;
-}
-.badge.ditolak {
-  background: #fee2e2;
-  color: #991b1b;
-}
-.badge.pending {
-  background: #fef9c3;
-  color: #854d0e;
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 16px; /* sama seperti stat-card */
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  outline: none;
 }
-@media (max-width: 640px) {
-  .stat-grid {
-    grid-template-columns: 1fr;
+
+/* ================= BUTTON ================= */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+
+.btn-prev,
+.btn-next,
+.btn-submit {
+  padding: 0.75rem 1.5rem;
+  border-radius: 16px; /* mirip stat-card */
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.btn-prev {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn-prev:hover {
+  background: #d1d5db;
+}
+
+.btn-next {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-next:hover {
+  background: #1e40af;
+}
+
+.btn-submit {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.btn-submit:hover {
+  background: #15803d;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .card-wrapper {
+    margin: 1.5rem;
   }
 }
 </style>
