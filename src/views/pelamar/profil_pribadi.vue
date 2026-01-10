@@ -1,6 +1,6 @@
 <template>
   <!-- HEADER -->
-  <div class="w-full rounded-b-2xl" style="background: linear-gradient(#2563eb)">
+  <div class="hero-blue w-full rounded-b-2xl">
     <div class="px-6 py-10 md:py-12 space-y-6 mx-auto max-w-7xl">
       <div>
         <h1 class="text-3xl font-bold text-white tracking-tight">Profil Pribadi</h1>
@@ -170,16 +170,16 @@ onMounted(loadProfile)
 .hero-blue {
   position: relative;
   width: 100%;
-  height: 18rem;
+  height: 20rem;
   background: linear-gradient(
     180deg,
     #2563eb 0%,
-    /* biru gelap di atas */ #3b82f6 40%,
-    /* biru medium agak ke tengah */ #eff6ff 70% /* biru muda ke bawah */
+    /* biru gelap di atas */ #3b82f6 45%,
+    /* biru medium lebih tebal */ #60a5fa 65%,
+    /* biru terang */ #eff6ff 90% /* biru muda ke bawah */
   );
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   z-index: 0;
 }
-/* Opsional, untuk tambahan styling jika mau */
 </style>
