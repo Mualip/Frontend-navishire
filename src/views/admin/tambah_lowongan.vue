@@ -83,7 +83,7 @@
             </div>
             <div>
               <button class="btn-edit" @click="editJob(job)">Edit</button>
-              <button class="btn-delete" @click="deleteJob(job._id)">Hapus</button>
+              <button class="btn-delete" @click="job._id && deleteJob(job._id)">Hapus</button>
             </div>
           </li>
         </ul>
@@ -176,7 +176,7 @@ const editJob = (job: JobForm): void => {
   form.lokasi = job.lokasi
   form.gaji = job.gaji
   form.deskripsi = job.deskripsi
-  form.tanggal_tutup = job.tanggal_tutup.split('T')[0]
+  form.tanggal_tutup = job.tanggal_tutup ? job.tanggal_tutup.split('T')[0] : ''
   form.status = job.status
   editMode.value = true
 }
