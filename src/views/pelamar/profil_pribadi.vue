@@ -171,7 +171,12 @@ onMounted(loadProfile)
   position: relative;
   width: 100%;
   height: 18rem;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(
+    180deg,
+    #2563eb 0%,
+    /* biru gelap di atas */ #3b82f6 40%,
+    /* biru medium agak ke tengah */ #eff6ff 70% /* biru muda ke bawah */
+  );
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   z-index: 0;
