@@ -386,8 +386,8 @@ const submitForm = async () => {
   top: 0;
   left: 0;
   right: 0;
-  height: 40rem;
-  background: linear-gradient(180deg, #2563eb 0%, #eff6ff 40%);
+  height: 80rem;
+  background: linear-gradient(180deg, #2563eb 0%, #eff6ff 30%);
   border-radius: 0 0 1.5rem 1.5rem;
   z-index: 0;
 }
