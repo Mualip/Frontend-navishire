@@ -449,30 +449,30 @@ const submitForm = async () => {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1e3a8a; /* biru gelap mirip dashboard */
+  color: #1e3a8a;
 }
 
 /* ================= LABEL & INPUT ================= */
 label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #1e3a8a; /* biru gelap */
+  color: #1e3a8a;
 }
 input,
 select,
 textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  background: #fefefe; /* putih bersih */
+  border-radius: 0.75rem; /* agak lebih bulat */
+  border: 1px solid #cbd5e1; /* lebih lembut dari #d1d5db */
+  background: #f9fafb; /* soft putih mirip dashboard */
   transition: all 0.25s ease;
 }
 input:focus,
 select:focus,
 textarea:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
   outline: none;
 }
 
@@ -483,14 +483,14 @@ textarea:focus {
   margin-top: 2.5rem;
 }
 .btn-prev {
-  background: #e5e7eb;
+  background: #f3f4f6; /* soft grey */
   color: #1f2937;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   transition: all 0.25s ease;
 }
 .btn-prev:hover {
-  background: #d1d5db;
+  background: #e5e7eb;
 }
 .btn-next {
   background: #2563eb;
