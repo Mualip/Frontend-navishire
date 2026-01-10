@@ -40,6 +40,9 @@ import type { AxiosError } from 'axios'
 
 const router = useRouter()
 
+// ===============================
+// STATE
+// ===============================
 const step = ref<'setup' | 'verify'>('verify')
 const otp = ref('')
 const qrData = ref('')
@@ -50,9 +53,14 @@ const loadingQr = ref(false)
 const userId = localStorage.getItem('tempUserId')
 const status = localStorage.getItem('twoFactorStatus')
 
-/* ===============================
-   INIT
-================================ */
+// ===============================
+// BASE API
+// ===============================
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
+// ===============================
+// INIT
+// ===============================
 onMounted(() => {
   if (!userId) {
     router.replace('/login')
@@ -67,18 +75,15 @@ onMounted(() => {
   }
 })
 
-/* ===============================
-   SETUP 2FA (QR)
-================================ */
+// ===============================
+// SETUP 2FA (QR)
+// ===============================
 const startSetup = async () => {
   loadingQr.value = true
   error.value = ''
 
   try {
-    const res = await axios.post('http://localhost:5000/api/2fa/setup', {
-      userId,
-    })
-
+    const res = await axios.post(`${API_URL}/api/2fa/setup`, { userId })
     qrData.value = res.data.qrCode
     manualKey.value = res.data.manualKey
   } catch {
@@ -88,14 +93,14 @@ const startSetup = async () => {
   }
 }
 
-/* ===============================
-   VERIFIKASI SETUP OTP
-================================ */
+// ===============================
+// VERIFIKASI SETUP OTP
+// ===============================
 const verifySetupOtp = async () => {
   error.value = ''
 
   try {
-    await axios.post('http://localhost:5000/api/2fa/setup/verify', {
+    await axios.post(`${API_URL}/api/2fa/setup/verify`, {
       userId,
       token: otp.value,
     })
@@ -109,14 +114,14 @@ const verifySetupOtp = async () => {
   }
 }
 
-/* ===============================
-   LOGIN DENGAN OTP
-================================ */
+// ===============================
+// LOGIN DENGAN OTP
+// ===============================
 const verifyLoginOtp = async () => {
   error.value = ''
 
   try {
-    const res = await axios.post('http://localhost:5000/api/2fa/login', {
+    const res = await axios.post(`${API_URL}/api/2fa/login`, {
       userId,
       token: otp.value,
     })
