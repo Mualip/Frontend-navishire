@@ -40,6 +40,10 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
+/* ================= API BASE ================= */
+const API_BASE = import.meta.env.VITE_API_URL
+
+/* ================= TYPES ================= */
 interface Soal {
   _id: string
   pertanyaan: string
@@ -65,15 +69,17 @@ interface Undangan {
   status: 'terkirim' | 'dibaca'
 }
 
+/* ================= STATE ================= */
 const undangan = ref<Undangan | null>(null)
 const loading = ref(true)
 const router = useRouter()
 
+/* ================= FETCH UNDANGAN ================= */
 const fetchUndangan = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:5000/api/lamaran/undangan', {
+    const res = await axios.get(`${API_BASE}/api/lamaran/undangan`, {
       headers: { Authorization: `Bearer ${token ?? ''}` },
     })
 
@@ -82,7 +88,7 @@ const fetchUndangan = async () => {
     } else {
       undangan.value = null
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Gagal mengambil undangan', err)
     undangan.value = null
   } finally {
@@ -90,6 +96,7 @@ const fetchUndangan = async () => {
   }
 }
 
+/* ================= HELPERS ================= */
 const lihatTes = () => {
   router.push({ name: 'mulaiTes' })
 }
@@ -101,6 +108,7 @@ const formatDate = (date: string) =>
     year: 'numeric',
   })
 
+/* ================= MOUNT ================= */
 onMounted(fetchUndangan)
 </script>
 

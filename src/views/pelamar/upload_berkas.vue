@@ -105,20 +105,26 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from 'axios'
 
+/* ================= STATE ================= */
 const selectedFile = ref<File | null>(null)
 const filePreview = ref<string | null>(null)
 const showPreview = ref(false)
 const isUploading = ref(false)
 const uploadSuccess = ref(false)
 
+/* ================= API BASE ================= */
+const API_BASE = import.meta.env.VITE_API_URL
+
+/* ================= HANDLER FILE ================= */
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
 
   if (!file) return
 
-  // Validasi
+  // Validasi type dan ukuran
   if (file.type !== 'application/pdf') {
     alert('Hanya file PDF yang diperbolehkan!')
     return
@@ -135,24 +141,51 @@ const handleFileUpload = (event: Event) => {
   showPreview.value = false
 }
 
+/* ================= PREVIEW ================= */
 const togglePreview = () => {
   showPreview.value = !showPreview.value
 }
 
-const uploadFile = () => {
-  if (!selectedFile.value) return
+/* ================= UPLOAD ================= */
+const uploadFile = async () => {
+  if (!selectedFile.value) return alert('Belum ada file yang dipilih!')
   isUploading.value = true
 
-  setTimeout(() => {
-    isUploading.value = false
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) throw new Error('Token tidak ditemukan')
+
+    const formData = new FormData()
+    formData.append('file', selectedFile.value)
+
+    const res = await axios.post(`${API_BASE}/api/upload`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    console.log('Upload success:', res.data)
     uploadSuccess.value = true
-  }, 1500)
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      alert(err.response?.data?.message || 'Gagal mengunggah file')
+      console.error(err.response?.data)
+    } else {
+      console.error(err)
+      alert('Gagal mengunggah file')
+    }
+  } finally {
+    isUploading.value = false
+  }
 }
 
+/* ================= HAPUS ================= */
 const hapusFile = () => {
   selectedFile.value = null
   filePreview.value = null
   showPreview.value = false
+  uploadSuccess.value = false
 }
 </script>
 

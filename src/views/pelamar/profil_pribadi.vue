@@ -54,10 +54,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-/* ================= API ================= */
 const API_BASE = `${import.meta.env.VITE_API_URL}/api/profile`
 
-/* ================= TYPE ================= */
 interface ProfileData {
   namaLengkap: string
   email: string
@@ -74,7 +72,6 @@ interface ProfileData {
   kewarganegaraan: string
 }
 
-/* ================= FIELD ================= */
 const profileFields = [
   { label: 'Nama Lengkap', key: 'namaLengkap' },
   { label: 'Email', key: 'email' },
@@ -91,7 +88,6 @@ const profileFields = [
   { label: 'Kewarganegaraan', key: 'kewarganegaraan' },
 ] as const
 
-/* ================= STATE ================= */
 const profilEditable = ref<ProfileData>({
   namaLengkap: '',
   email: '',
@@ -111,7 +107,6 @@ const profilEditable = ref<ProfileData>({
 const isEditing = ref(false)
 const loading = ref(false)
 
-/* ================= FETCH HELPER ================= */
 async function apiFetch(url: string, method: string, body?: unknown) {
   const token = localStorage.getItem('token')
   if (!token) throw new Error('TOKEN TIDAK ADA')
@@ -124,14 +119,11 @@ async function apiFetch(url: string, method: string, body?: unknown) {
     },
     body: body ? JSON.stringify(body) : undefined,
   })
-
   const data = await res.json()
   if (!res.ok) throw new Error(data.message || 'API Error')
-
   return data
 }
 
-/* ================= LOAD ================= */
 const loadProfile = async () => {
   try {
     loading.value = true
@@ -146,12 +138,10 @@ const loadProfile = async () => {
   }
 }
 
-/* ================= SAVE ================= */
 const saveProfile = async () => {
   try {
     loading.value = true
-    const res = await apiFetch(API_BASE, 'POST', profilEditable.value)
-    console.log('SAVE RESPONSE:', res)
+    await apiFetch(API_BASE, 'POST', profilEditable.value)
     await loadProfile()
     alert('Profil berhasil disimpan')
   } catch (err) {
@@ -163,7 +153,6 @@ const saveProfile = async () => {
   }
 }
 
-/* ================= BUTTON ================= */
 const toggleEdit = async () => {
   if (isEditing.value) {
     await saveProfile()

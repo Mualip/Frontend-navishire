@@ -10,26 +10,32 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+/* ================= STATE ================= */
 const nama = ref<string>('')
 
+/* ================= API BASE ================= */
+const API_BASE = import.meta.env.VITE_API_URL
+
+/* ================= LOAD USER ================= */
 const loadUser = async () => {
   try {
     const token = localStorage.getItem('token')
     if (!token) return
 
-    const res = await axios.get('http://localhost:5000/api/auth/profile', {
+    const res = await axios.get(`${API_BASE}/api/auth/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
 
-    // 🔥 INI YANG BENAR
+    // Ambil nama user dari response
     nama.value = res.data.user.name
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Gagal mengambil data user', err)
   }
 }
 
+/* ================= MOUNT ================= */
 onMounted(loadUser)
 </script>
 

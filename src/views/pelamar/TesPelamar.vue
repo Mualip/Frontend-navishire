@@ -76,9 +76,10 @@ const materi = ref<MateriResponse | null>(null)
 const loading = ref(true)
 const error = ref('')
 const submitting = ref(false)
-const jawaban = ref<Record<string, string>>({}) // sekarang semua string (huruf atau teks)
+const jawaban = ref<Record<string, string>>({}) // semua jawaban string
 
-const API_BASE = 'http://localhost:5000'
+/* ================= API BASE ================= */
+const API_BASE = import.meta.env.VITE_API_URL
 
 /* ================= HELPERS ================= */
 const resolveImage = (filename?: string | null, type: 'soal' | 'opsi' = 'soal') => {
@@ -107,7 +108,7 @@ const loadMateri = async (): Promise<void> => {
     // Inisialisasi jawaban default
     materi.value.soal.forEach((s) => {
       if (!(s._id in jawaban.value)) {
-        jawaban.value[s._id] = s.tipe === 'pg' ? '' : ''
+        jawaban.value[s._id] = ''
       }
     })
   } catch (err: unknown) {
@@ -124,7 +125,7 @@ const submitTes = async (): Promise<void> => {
   const token = localStorage.getItem('token')
   if (!token) return alert('Token tidak ditemukan')
 
-  // cek jawaban PG kosong
+  // Cek jawaban PG kosong
   for (const s of materi.value!.soal) {
     if (s.tipe === 'pg' && !jawaban.value[s._id]) {
       return alert(`Soal nomor ${materi.value!.soal.indexOf(s) + 1} belum dijawab`)

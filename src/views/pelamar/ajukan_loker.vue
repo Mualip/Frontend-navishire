@@ -380,48 +380,54 @@ const submitForm = async () => {
 </script>
 
 <style scoped>
-/* CSS TIDAK DIUBAH */
+/* ================= HERO ================= */
 .hero-blue {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 20rem;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(180deg, #2563eb 0%, #eff6ff 40%);
   border-radius: 0 0 1.5rem 1.5rem;
   z-index: 0;
 }
 .hero-section {
   position: relative;
-  padding-top: 16px; /* geser konten, bukan bikin jarak kosong */
+  padding-top: 16px;
 }
 .header-wrapper {
   position: relative;
   z-index: 1;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 0 20px;
 }
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
 }
 .subtitle {
   color: #e0e7ff;
   margin-top: 0.5rem;
 }
+
+/* ================= CARD ================= */
 .card-wrapper {
   position: relative;
   z-index: 10;
-  background: #fff;
+  background: #ffffff;
   max-width: 72rem;
-
-  margin: 20px 20px 1.5rem 20px; /* jarak kanan kiri */
-
+  margin: 20px;
   padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
+  transition: all 0.25s ease;
 }
+.card-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
+}
+
+/* ================= STEP BAR ================= */
 .step-indicator {
   display: flex;
   gap: 0.5rem;
@@ -432,20 +438,25 @@ const submitForm = async () => {
   height: 0.5rem;
   background: #e5e7eb;
   border-radius: 999px;
+  transition: all 0.25s ease;
 }
 .step-bar.active {
   background: #2563eb;
 }
+
+/* ================= STEP TITLE ================= */
 .step-title {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
+  color: #1e3a8a; /* biru gelap mirip dashboard */
 }
 
+/* ================= LABEL & INPUT ================= */
 label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #374151;
+  color: #1e3a8a; /* biru gelap */
 }
 input,
 select,
@@ -454,8 +465,18 @@ textarea {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   border: 1px solid #d1d5db;
-  background: #f9fafb;
+  background: #fefefe; /* putih bersih */
+  transition: all 0.25s ease;
 }
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  outline: none;
+}
+
+/* ================= BUTTON ================= */
 .button-group {
   display: flex;
   justify-content: space-between;
@@ -463,19 +484,39 @@ textarea {
 }
 .btn-prev {
   background: #e5e7eb;
+  color: #1f2937;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
+  transition: all 0.25s ease;
+}
+.btn-prev:hover {
+  background: #d1d5db;
 }
 .btn-next {
   background: #2563eb;
-  color: #fff;
+  color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
+  transition: all 0.25s ease;
+}
+.btn-next:hover {
+  background: #1e40af;
 }
 .btn-submit {
   background: #16a34a;
-  color: #fff;
+  color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
+  transition: all 0.25s ease;
+}
+.btn-submit:hover {
+  background: #15803d;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .card-wrapper {
+    margin: 1.5rem;
+  }
 }
 </style>

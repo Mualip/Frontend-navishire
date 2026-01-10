@@ -57,6 +57,10 @@ const totalLamaran = ref<number>(0)
 const profilLengkap = ref<boolean>(false)
 const tahapAktif = ref<string>('Seleksi Berkas')
 
+/* =======================
+   API BASE
+======================= */
+const API_BASE = import.meta.env.VITE_API_URL
 const token = localStorage.getItem('token')
 
 /* =======================
@@ -64,7 +68,7 @@ const token = localStorage.getItem('token')
 ======================= */
 const fetchStatusBerkas = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/api/lamaran/saya', {
+    const res = await axios.get(`${API_BASE}/api/lamaran/saya`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     status.value = res.data?.status ?? 'pending'
@@ -75,7 +79,7 @@ const fetchStatusBerkas = async () => {
 
 const fetchTotalLamaran = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/api/lamaran/total', {
+    const res = await axios.get(`${API_BASE}/api/lamaran/total`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     totalLamaran.value = res.data?.total ?? 0
@@ -86,7 +90,7 @@ const fetchTotalLamaran = async () => {
 
 const fetchProfileStatus = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/api/profile/status', {
+    const res = await axios.get(`${API_BASE}/api/profile/status`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     profilLengkap.value = res.data?.lengkap ?? false

@@ -50,6 +50,11 @@ const materiList = ref<Materi[]>([])
 const loading = ref<boolean>(true)
 
 /* =====================
+   API BASE
+===================== */
+const API_URL = import.meta.env.VITE_API_URL
+
+/* =====================
    LOAD MATERI
 ===================== */
 const loadMateri = async (): Promise<void> => {
@@ -57,7 +62,7 @@ const loadMateri = async (): Promise<void> => {
     const token = localStorage.getItem('token')
     if (!token) return
 
-    const res = await axios.get<UndanganResponse>('http://localhost:5000/api/lamaran/undangan', {
+    const res = await axios.get<UndanganResponse>(`${API_URL}/api/lamaran/undangan`, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
