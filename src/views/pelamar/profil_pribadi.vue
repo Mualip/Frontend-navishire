@@ -154,9 +154,9 @@ onMounted(loadProfile)
 }
 
 .header-inner {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: auto;
-  padding: 3rem 1.5rem; /* ✅ BUG FIX */
+  padding: 1rem 1.5rem; /* ✅ BUG FIX */
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
