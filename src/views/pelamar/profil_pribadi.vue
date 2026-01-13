@@ -8,9 +8,12 @@
       </div>
 
       <button class="btn-primary" @click="toggleEdit" :disabled="loading">
-        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
+        {{ isEditing ? 'Simpan' : 'Edit Profil' }}
       </button>
     </div>
+
+    <!-- SMOOTH BLUR TRANSITION -->
+    <div class="hero-fade"></div>
   </section>
 
   <!-- CONTENT -->
@@ -19,8 +22,8 @@
       <h2 class="card-title">Informasi Pribadi</h2>
 
       <div class="grid">
-        <div v-for="field in profileFields" :key="field.key" class="field-card">
-          <label class="field-label">{{ field.label }}</label>
+        <div v-for="field in profileFields" :key="field.key" class="field-row">
+          <div class="field-label">{{ field.label }}</div>
 
           <input
             v-if="isEditing"
@@ -138,12 +141,13 @@ onMounted(loadProfile)
 <style scoped>
 /* ================= HERO ================= */
 .hero {
+  position: relative;
   background: linear-gradient(135deg, #2563eb, #1e40af);
-  padding: 2.5rem 1.5rem 5rem;
+  padding: 3rem 1.5rem 6rem;
 }
 
 .hero-inner {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -151,44 +155,61 @@ onMounted(loadProfile)
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: #fff;
 }
 
 .subtitle {
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* BLUR TRANSITION */
+.hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 30%,
+    rgba(255, 255, 255, 0.5) 60%,
+    #ffffff 100%
+  );
+  backdrop-filter: blur(6px);
 }
 
 /* ================= BUTTON ================= */
 .btn-primary {
-  background: #fff;
+  background: #ffffff;
   color: #1e3a8a;
-  padding: 0.6rem 1.8rem;
+  padding: 0.6rem 2rem;
   border-radius: 14px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* ================= CONTENT ================= */
 .content {
-  max-width: 960px;
-  margin: -3.5rem auto 3rem;
-  padding: 0 1rem;
+  max-width: 1300px;
+  margin: -3rem auto 3rem;
+  padding: 0 1.5rem;
 }
 
 .card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 22px;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2);
+  padding: 2.2rem;
+  box-shadow: 0 25px 45px rgba(37, 99, 235, 0.25);
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #1e40af;
   margin-bottom: 1.5rem;
@@ -196,46 +217,55 @@ onMounted(loadProfile)
 
 /* ================= GRID ================= */
 .grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ================= FIELD ROW ================= */
+.field-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ================= FIELD ================= */
-.field-card {
+  grid-template-columns: 260px 1fr;
+  align-items: center;
   border: 1.5px solid #bfdbfe;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 0.75rem 1rem;
-  background: #f8fbff;
+  background: #f9fbff;
 }
 
 .field-label {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 800;
   color: #1e40af;
   letter-spacing: 0.06em;
 }
 
 .field-value {
-  margin-top: 0.35rem;
   font-size: 0.95rem;
   color: #0f172a;
 }
 
 .field-input {
-  margin-top: 0.35rem;
   width: 100%;
   border: none;
   border-bottom: 2px solid #2563eb;
   background: transparent;
   font-size: 0.95rem;
   outline: none;
-  padding: 0.2rem 0;
+  padding: 0.25rem 0;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
 }
 </style>
