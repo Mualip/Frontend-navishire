@@ -1,38 +1,38 @@
 <template>
-  <!-- HERO HEADER -->
-  <section class="hero-blue">
-    <div class="header-inner">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
       <div>
         <h1 class="title">Profil Pribadi</h1>
-        <p class="subtitle">Informasi lengkap mengenai data diri pelamar.</p>
+        <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
       </div>
 
       <button class="btn-primary" @click="toggleEdit" :disabled="loading">
-        {{ isEditing ? 'Simpan' : 'Edit' }}
+        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
       </button>
     </div>
   </section>
 
   <!-- CONTENT -->
-  <section class="content-wrapper">
+  <section class="content">
     <div class="card">
       <h2 class="card-title">Informasi Pribadi</h2>
 
-      <!-- FIX 1 KOLOM -->
       <div class="grid">
         <div v-for="field in profileFields" :key="field.key" class="field-card">
-          <span class="field-label">{{ field.label }}</span>
+          <label class="field-label">{{ field.label }}</label>
 
           <input
             v-if="isEditing"
             v-model="profilEditable[field.key]"
             class="field-input"
             type="text"
+            placeholder="Isi data..."
           />
 
-          <p v-else class="field-value">
+          <div v-else class="field-value">
             {{ profilEditable[field.key] || '-' }}
-          </p>
+          </div>
         </div>
       </div>
     </div>
@@ -121,8 +121,9 @@ const loadProfile = async () => {
 }
 
 const saveProfile = async () => {
+  loading.value = true
   await apiFetch(API_BASE, 'POST', profilEditable.value)
-  await loadProfile()
+  loading.value = false
   alert('Profil berhasil disimpan')
 }
 
@@ -136,110 +137,105 @@ onMounted(loadProfile)
 
 <style scoped>
 /* ================= HERO ================= */
-.hero-blue {
-  width: 100%;
-  padding-bottom: 6rem;
-  background: linear-gradient(
-    to bottom,
-    #2563eb 0%,
-    #2563eb 50%,
-    #3b82f6 70%,
-    rgba(59, 130, 246, 0.25) 85%,
-    rgba(59, 130, 246, 0) 100%
-  );
+.hero {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  padding: 2.5rem 1.5rem 5rem;
 }
 
-.header-inner {
+.hero-inner {
   max-width: 1100px;
   margin: auto;
-  padding: 3rem 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .title {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #fff;
 }
 
 .subtitle {
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   color: rgba(255, 255, 255, 0.85);
 }
 
 /* ================= BUTTON ================= */
 .btn-primary {
-  background: #ffffff;
+  background: #fff;
   color: #1e3a8a;
-  padding: 0.55rem 1.75rem;
-  border-radius: 12px;
+  padding: 0.6rem 1.8rem;
+  border-radius: 14px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
 }
 
 /* ================= CONTENT ================= */
-.content-wrapper {
-  max-width: 720px; /* RAMPING */
+.content {
+  max-width: 960px;
   margin: -3.5rem auto 3rem;
   padding: 0 1rem;
 }
 
 .card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 1.75rem;
-  box-shadow: 0 18px 35px rgba(37, 99, 235, 0.18);
+  background: #fff;
+  border-radius: 22px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2);
 }
 
 .card-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  color: #1e3a8a;
-  margin-bottom: 1.25rem;
+  color: #1e40af;
+  margin-bottom: 1.5rem;
 }
 
-/* ================= GRID (FIX 1 KOLOM) ================= */
+/* ================= GRID ================= */
 .grid {
   display: grid;
-  grid-template-columns: 1fr; /* 🔒 DIKUNCI */
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ================= FIELD ================= */
 .field-card {
   border: 1.5px solid #bfdbfe;
-  border-radius: 14px;
-  padding: 0.65rem 0.9rem;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  background: #f8fbff;
 }
 
 .field-label {
   font-size: 0.65rem;
   font-weight: 800;
   color: #1e40af;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .field-value {
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
   font-size: 0.95rem;
   color: #0f172a;
-  min-height: 28px;
-  display: flex;
-  align-items: center;
 }
 
 .field-input {
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
   width: 100%;
   border: none;
-  outline: none;
-  font-size: 0.95rem;
   border-bottom: 2px solid #2563eb;
-  padding: 0.2rem 0;
   background: transparent;
+  font-size: 0.95rem;
+  outline: none;
+  padding: 0.2rem 0;
 }
 </style>
