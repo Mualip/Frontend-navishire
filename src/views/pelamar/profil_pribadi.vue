@@ -157,7 +157,7 @@ onMounted(loadProfile)
 .header-inner {
   max-width: 1280px;
   margin: auto;
-  padding: 3rem 1.5rem;
+  padding: rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -221,7 +221,7 @@ onMounted(loadProfile)
 .field-card {
   border: 1.5px solid #bfdbfe;
   border-radius: 16px;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
 }
 
 .field-label {
