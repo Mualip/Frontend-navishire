@@ -1,32 +1,27 @@
 <template>
-  <!-- HEADER / HERO -->
-  <div class="hero-blue">
+  <!-- HERO HEADER -->
+  <section class="hero-blue">
     <div class="header-inner">
-      <!-- TITLE -->
       <div>
         <h1 class="title">Profil Pribadi</h1>
         <p class="subtitle">Informasi lengkap mengenai data diri pelamar.</p>
       </div>
 
-      <!-- BUTTON -->
-      <div class="header-action">
-        <button @click="toggleEdit" :disabled="loading" class="btn-primary">
-          {{ isEditing ? 'Simpan' : 'Edit' }}
-        </button>
-      </div>
+      <button class="btn-primary" @click="toggleEdit" :disabled="loading">
+        {{ isEditing ? 'Simpan' : 'Edit' }}
+      </button>
     </div>
-  </div>
+  </section>
 
   <!-- CONTENT -->
-  <div class="content-wrapper">
+  <section class="content-wrapper">
     <div class="card">
       <h2 class="card-title">Informasi Pribadi</h2>
 
       <div class="grid">
         <div v-for="field in profileFields" :key="field.key" class="field-card">
-          <p class="field-label">{{ field.label }}</p>
+          <span class="field-label">{{ field.label }}</span>
 
-          <!-- EDIT -->
           <input
             v-if="isEditing"
             v-model="profilEditable[field.key]"
@@ -34,14 +29,13 @@
             type="text"
           />
 
-          <!-- READ -->
           <p v-else class="field-value">
             {{ profilEditable[field.key] || '-' }}
           </p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -140,13 +134,24 @@ onMounted(loadProfile)
 </script>
 
 <style scoped>
-/* ================= HEADER ================= */
+/* ================= HERO (FIX FINAL) ================= */
 .hero-blue {
+  position: relative;
   width: 100%;
-  padding-bottom: 3.5rem;
-  background: linear-gradient(180deg, #2563eb 0%, #3b82f6 55%, #60a5fa 75%, #eff6ff 100%);
-  border-bottom-left-radius: 28px;
-  border-bottom-right-radius: 28px;
+  padding-bottom: 6rem;
+
+  /* BIRU TEGAS → BLUR KE BAWAH */
+  background: linear-gradient(
+    to bottom,
+    #2563eb 0%,
+    #2563eb 50%,
+    #3b82f6 70%,
+    rgba(59, 130, 246, 0.25) 85%,
+    rgba(59, 130, 246, 0) 100%
+  );
+
+  /* ❌ TANPA LENGKUNG */
+  border-radius: 0;
 }
 
 .header-inner {
@@ -159,9 +164,9 @@ onMounted(loadProfile)
 }
 
 .title {
-  font-size: 2.75rem;
+  font-size: 2.7rem;
   font-weight: 800;
-  color: white;
+  color: #ffffff;
 }
 
 .subtitle {
@@ -171,12 +176,14 @@ onMounted(loadProfile)
 
 /* ================= BUTTON ================= */
 .btn-primary {
-  background: white;
+  background: #ffffff;
   color: #1e3a8a;
   padding: 0.65rem 2rem;
   border-radius: 14px;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
@@ -186,33 +193,32 @@ onMounted(loadProfile)
 /* ================= CONTENT ================= */
 .content-wrapper {
   max-width: 1280px;
-  margin: -3rem auto 3rem;
+  margin: -3.5rem auto 3rem;
   padding: 0 1.5rem;
 }
 
 .card {
-  background: white;
+  background: #ffffff;
   border-radius: 24px;
   padding: 2rem;
-  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.18);
 }
 
 .card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 800;
   color: #1e3a8a;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 /* ================= GRID ================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.25rem;
 }
 
 .field-card {
-  background: white;
   border: 1.5px solid #bfdbfe;
   border-radius: 16px;
   padding: 1rem 1.25rem;
@@ -228,7 +234,6 @@ onMounted(loadProfile)
 .field-value {
   margin-top: 0.4rem;
   font-size: 1rem;
-  font-weight: 500;
   color: #0f172a;
 }
 
