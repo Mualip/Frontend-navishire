@@ -1,51 +1,44 @@
 <template>
-  <!-- HERO HEADER -->
-  <div class="hero-blue w-full rounded-b-2xl">
-    <div class="px-6 py-10 md:py-12 space-y-6 mx-auto max-w-7xl">
+  <!-- HEADER / HERO -->
+  <div class="hero-blue">
+    <div class="header-inner">
+      <!-- TITLE -->
       <div>
-        <h1 class="text-3xl font-bold text-white tracking-tight">Profil Pribadi</h1>
-        <p class="text-blue-100 text-sm mt-2">Informasi lengkap mengenai data diri pelamar.</p>
+        <h1 class="title">Profil Pribadi</h1>
+        <p class="subtitle">Informasi lengkap mengenai data diri pelamar.</p>
       </div>
 
       <!-- BUTTON -->
-      <div class="mt-28 flex justify-end">
-        <button
-          @click="toggleEdit"
-          :disabled="loading"
-          class="px-8 py-2.5 rounded-lg bg-white text-blue-700 font-semibold shadow-md hover:bg-blue-50 transition-all disabled:opacity-50"
-        >
+      <div class="header-action">
+        <button @click="toggleEdit" :disabled="loading" class="btn-primary">
           {{ isEditing ? 'Simpan' : 'Edit' }}
         </button>
       </div>
     </div>
   </div>
 
-  <!-- CARD PROFILE -->
-  <div class="bg-white shadow-md border border-blue-100 rounded-xl p-6 mt-8 max-w-7xl mx-auto">
-    <h2 class="text-lg font-semibold text-blue-800 mb-6">Informasi Pribadi</h2>
+  <!-- CONTENT -->
+  <div class="content-wrapper">
+    <div class="card">
+      <h2 class="card-title">Informasi Pribadi</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div
-        v-for="field in profileFields"
-        :key="field.key"
-        class="p-4 rounded-lg bg-blue-50 border border-blue-100"
-      >
-        <p class="text-xs font-semibold text-blue-600 uppercase mb-1">
-          {{ field.label }}
-        </p>
+      <div class="grid">
+        <div v-for="field in profileFields" :key="field.key" class="field-card">
+          <p class="field-label">{{ field.label }}</p>
 
-        <!-- EDIT MODE -->
-        <input
-          v-if="isEditing"
-          v-model="profilEditable[field.key]"
-          type="text"
-          class="w-full px-3 py-2 rounded-md border border-blue-300 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white"
-        />
+          <!-- EDIT -->
+          <input
+            v-if="isEditing"
+            v-model="profilEditable[field.key]"
+            class="field-input"
+            type="text"
+          />
 
-        <!-- READ MODE -->
-        <p v-else class="mt-1.5 text-blue-900 font-medium min-h-[24px]">
-          {{ profilEditable[field.key] || '-' }}
-        </p>
+          <!-- READ -->
+          <p v-else class="field-value">
+            {{ profilEditable[field.key] || '-' }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -54,7 +47,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-/* ================= API ================= */
 const API_BASE = `${import.meta.env.VITE_API_URL}/api/profile`
 
 interface ProfileData {
@@ -108,7 +100,6 @@ const profilEditable = ref<ProfileData>({
 const isEditing = ref(false)
 const loading = ref(false)
 
-/* ================= API FETCH ================= */
 async function apiFetch(url: string, method: string, body?: unknown) {
   const token = localStorage.getItem('token')
   if (!token) throw new Error('TOKEN TIDAK ADA')
@@ -127,55 +118,127 @@ async function apiFetch(url: string, method: string, body?: unknown) {
   return data
 }
 
-/* ================= LOAD ================= */
 const loadProfile = async () => {
-  try {
-    loading.value = true
-    const data = await apiFetch(API_BASE, 'GET')
-    profileFields.forEach((f) => {
-      profilEditable.value[f.key] = data?.[f.key] ?? ''
-    })
-  } catch (err) {
-    console.error('Load profile gagal:', err)
-  } finally {
-    loading.value = false
-  }
+  const data = await apiFetch(API_BASE, 'GET')
+  profileFields.forEach((f) => {
+    profilEditable.value[f.key] = data?.[f.key] ?? ''
+  })
 }
 
-/* ================= SAVE ================= */
 const saveProfile = async () => {
-  try {
-    loading.value = true
-    await apiFetch(API_BASE, 'POST', profilEditable.value)
-    await loadProfile()
-    alert('Profil berhasil disimpan')
-  } catch (err) {
-    console.error('SAVE PROFILE ERROR:', err)
-    if (err instanceof Error) alert(err.message)
-  } finally {
-    loading.value = false
-  }
+  await apiFetch(API_BASE, 'POST', profilEditable.value)
+  await loadProfile()
+  alert('Profil berhasil disimpan')
 }
 
 const toggleEdit = async () => {
-  if (isEditing.value) {
-    await saveProfile()
-    isEditing.value = false
-  } else {
-    isEditing.value = true
-  }
+  if (isEditing.value) await saveProfile()
+  isEditing.value = !isEditing.value
 }
 
 onMounted(loadProfile)
 </script>
 
 <style scoped>
-/* ===== HERO BLUE GRADIENT (SAMA DENGAN FORM LAMARAN) ===== */
+/* ================= HEADER ================= */
 .hero-blue {
   width: 100%;
-  height: 10rem;
-  background: linear-gradient(180deg, #2563eb 0%, #3b82f6 45%, #60a5fa 65%, #eff6ff 90%);
-  border-bottom-left-radius: 1.5rem;
-  border-bottom-right-radius: 1.5rem;
+  padding-bottom: 3.5rem;
+  background: linear-gradient(180deg, #2563eb 0%, #3b82f6 55%, #60a5fa 75%, #eff6ff 100%);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: white;
+}
+
+.subtitle {
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+  background: white;
+  color: #1e3a8a;
+  padding: 0.65rem 2rem;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.btn-primary:hover {
+  background: #f0f7ff;
+}
+
+/* ================= CONTENT ================= */
+.content-wrapper {
+  max-width: 1280px;
+  margin: -3rem auto 3rem;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+}
+
+/* ================= GRID ================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.field-card {
+  background: white;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #1e40af;
+  letter-spacing: 0.05em;
+}
+
+.field-value {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.field-input {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  border-bottom: 2px solid #2563eb;
+  padding: 0.25rem 0;
 }
 </style>
