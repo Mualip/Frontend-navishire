@@ -18,6 +18,7 @@
     <div class="card">
       <h2 class="card-title">Informasi Pribadi</h2>
 
+      <!-- SATU KOLOM KE BAWAH -->
       <div class="grid">
         <div v-for="field in profileFields" :key="field.key" class="field-card">
           <span class="field-label">{{ field.label }}</span>
@@ -134,9 +135,8 @@ onMounted(loadProfile)
 </script>
 
 <style scoped>
-/* ================= HERO (FIX FINAL) ================= */
+/* ================= HERO ================= */
 .hero-blue {
-  position: relative;
   width: 100%;
   padding-bottom: 6rem;
 
@@ -150,27 +150,26 @@ onMounted(loadProfile)
     rgba(59, 130, 246, 0) 100%
   );
 
-  /* ❌ TANPA LENGKUNG */
-  border-radius: 0;
+  border-radius: 0; /* TANPA LENGKUNG */
 }
 
 .header-inner {
-  max-width: 1280px;
+  max-width: 1100px;
   margin: auto;
-  padding: rem 1.5rem;
+  padding: 3rem 1.5rem; /* ✅ BUG FIX */
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 }
 
 .title {
-  font-size: 2.7rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: #ffffff;
 }
 
 .subtitle {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   color: rgba(255, 255, 255, 0.85);
 }
 
@@ -178,8 +177,8 @@ onMounted(loadProfile)
 .btn-primary {
   background: #ffffff;
   color: #1e3a8a;
-  padding: 0.65rem 2rem;
-  border-radius: 14px;
+  padding: 0.55rem 1.75rem;
+  border-radius: 12px;
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -192,58 +191,63 @@ onMounted(loadProfile)
 
 /* ================= CONTENT ================= */
 .content-wrapper {
-  max-width: 1280px;
+  max-width: 720px; /* 🔥 RAMPING */
   margin: -3.5rem auto 3rem;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 }
 
 .card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.18);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 18px 35px rgba(37, 99, 235, 0.18);
 }
 
 .card-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: #1e3a8a;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 
-/* ================= GRID ================= */
+/* ================= GRID (1 KOLOM) ================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: 1fr; /* ✅ KE BAWAH */
+  gap: 0.75rem;
 }
 
+/* ================= FIELD ================= */
 .field-card {
   border: 1.5px solid #bfdbfe;
-  border-radius: 16px;
-  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  padding: 0.65rem 0.9rem;
 }
 
 .field-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 800;
   color: #1e40af;
   letter-spacing: 0.05em;
 }
 
 .field-value {
-  margin-top: 0.4rem;
-  font-size: 1rem;
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
   color: #0f172a;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
 }
 
 .field-input {
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   width: 100%;
   border: none;
   outline: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   border-bottom: 2px solid #2563eb;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
+  background: transparent;
 }
 </style>
