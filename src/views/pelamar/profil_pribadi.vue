@@ -18,7 +18,7 @@
     <div class="card">
       <h2 class="card-title">Informasi Pribadi</h2>
 
-      <!-- SATU KOLOM KE BAWAH -->
+      <!-- FIX 1 KOLOM -->
       <div class="grid">
         <div v-for="field in profileFields" :key="field.key" class="field-card">
           <span class="field-label">{{ field.label }}</span>
@@ -139,8 +139,6 @@ onMounted(loadProfile)
 .hero-blue {
   width: 100%;
   padding-bottom: 6rem;
-
-  /* BIRU TEGAS → BLUR KE BAWAH */
   background: linear-gradient(
     to bottom,
     #2563eb 0%,
@@ -149,14 +147,12 @@ onMounted(loadProfile)
     rgba(59, 130, 246, 0.25) 85%,
     rgba(59, 130, 246, 0) 100%
   );
-
-  border-radius: 0; /* TANPA LENGKUNG */
 }
 
 .header-inner {
-  max-width: 1300px;
+  max-width: 1100px;
   margin: auto;
-  padding: 1rem 1.5rem; /* ✅ BUG FIX */
+  padding: 3rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -185,13 +181,9 @@ onMounted(loadProfile)
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.btn-primary:hover {
-  background: #f0f7ff;
-}
-
 /* ================= CONTENT ================= */
 .content-wrapper {
-  max-width: 720px; /* 🔥 RAMPING */
+  max-width: 720px; /* RAMPING */
   margin: -3.5rem auto 3rem;
   padding: 0 1rem;
 }
@@ -210,10 +202,10 @@ onMounted(loadProfile)
   margin-bottom: 1.25rem;
 }
 
-/* ================= GRID (1 KOLOM) ================= */
+/* ================= GRID (FIX 1 KOLOM) ================= */
 .grid {
   display: grid;
-  grid-template-columns: 1fr; /* ✅ KE BAWAH */
+  grid-template-columns: 1fr; /* 🔒 DIKUNCI */
   gap: 0.75rem;
 }
 
