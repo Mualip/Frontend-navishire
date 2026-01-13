@@ -217,6 +217,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+/* ================= API BASE (NETLIFY) ================= */
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`
+
 /* ================= STEP ================= */
 const step = ref(1)
 
@@ -289,7 +292,7 @@ const fieldsStep1 = ref([
   },
 ])
 
-/* ================= NIK ================= */
+/* ================= NIK HANDLER ================= */
 const handleNikInput = (e: Event) => {
   const t = e.target as HTMLInputElement
   let val = t.value.replace(/\D/g, '')
@@ -306,9 +309,9 @@ const handleFileUpload = (e: Event, key: string) => {
   if (t.files?.[0]) uploadedFiles.value[key] = t.files[0]
 }
 
-/* ================= SUBMIT (SUDAH ADA TOKEN) ================= */
+/* ================= SUBMIT ================= */
 const submitForm = async () => {
-  /* 🔐 AMBIL TOKEN */
+  /* 🔐 TOKEN */
   const token = localStorage.getItem('token')
   if (!token) {
     alert('Anda belum login')
@@ -347,9 +350,9 @@ const submitForm = async () => {
     .filter(Boolean)
     .forEach((h) => fd.append('hobi[]', h))
 
-  /* DATA */
+  /* DATA UTAMA */
   Object.entries(form.value).forEach(([k, v]) => {
-    if (k !== 'sosmed' && k !== 'facebookLink' && k !== 'instagram' && k !== 'hobi') {
+    if (!['sosmed', 'facebookLink', 'instagram', 'hobi'].includes(k)) {
       fd.append(k, String(v))
     }
   })
@@ -359,8 +362,8 @@ const submitForm = async () => {
     fd.append('berkas', f)
   })
 
-  /* REQUEST (🔥 TOKEN MASUK DI SINI) */
-  const res = await fetch('http://localhost:5000/api/lamaran', {
+  /* REQUEST → NETLIFY API */
+  const res = await fetch(`${API_BASE}/lamaran`, {
     method: 'POST',
     body: fd,
     headers: {
