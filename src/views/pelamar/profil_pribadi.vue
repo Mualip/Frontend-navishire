@@ -173,12 +173,14 @@ onMounted(loadProfile)
 /* ================= CARD ================= */
 .card-wrapper {
   position: relative;
+  z-index: 10;
   background: #ffffff;
-  max-width: 82rem;
-  margin: -7rem auto 2.5rem; /* ⬅️ TURUN LAGI (inti masalah) */
-  padding: 2.2rem;
+  max-width: 72rem;
+  margin: 20px;
+  padding: 2rem;
   border-radius: 18px;
-  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
+  transition: all 0.25s ease;
 }
 
 /* HEADER CARD */
