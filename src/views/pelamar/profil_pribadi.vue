@@ -6,16 +6,15 @@
     <header class="header-wrapper">
       <h1 class="title">Profil Pribadi</h1>
       <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
-
-      <button class="btn-edit" @click="toggleEdit" :disabled="loading">
-        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
-      </button>
     </header>
   </section>
 
   <!-- ================= CARD ================= -->
   <div class="card-wrapper">
     <h2 class="section-title">Informasi Pribadi</h2>
+    <button class="btn-edit" @click="toggleEdit" :disabled="loading">
+      {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
+    </button>
 
     <div class="form-grid">
       <div v-for="field in profileFields" :key="field.key" class="form-group">
@@ -137,6 +136,7 @@ onMounted(loadProfile)
 .hero-section {
   position: relative;
   padding-top: 1.5rem;
+  padding-bottom: 6rem;
 }
 
 .hero-blue {
