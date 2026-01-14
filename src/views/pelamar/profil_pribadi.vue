@@ -1,207 +1,104 @@
 <template>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1 class="title">Profil Pribadi</h1>
-        <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
-      </div>
-
-      <button class="btn-primary" @click="toggleEdit" :disabled="loading">
-        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
-      </button>
+  <!-- HEADER -->
+  <section class="header">
+    <div class="header-inner">
+      <span class="breadcrumb">Dashboard Pelamar</span>
+      <h1 class="page-title">Form Lamaran Kerja</h1>
+      <p class="page-desc">Lengkapi semua data berikut untuk melamar pekerjaan.</p>
     </div>
-
-    <div class="hero-fade"></div>
+    <div class="header-fade"></div>
   </section>
 
   <!-- CONTENT -->
   <section class="content">
     <div class="card">
-      <h2 class="card-title">Informasi Pribadi</h2>
-
-      <div class="grid">
-        <div v-for="field in profileFields" :key="field.key" class="field-row">
-          <label class="field-label">
-            {{ field.label }}
-          </label>
-
-          <input
-            v-if="isEditing"
-            v-model="profilEditable[field.key]"
-            class="field-input"
-            type="text"
-            placeholder="Isi data..."
-          />
-
-          <div v-else class="field-value">
-            {{ profilEditable[field.key] || '-' }}
-          </div>
-        </div>
+      <!-- PROGRESS -->
+      <div class="progress">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
+
+      <h2 class="step-title">Step 1 — Data Pribadi & Pendidikan</h2>
+
+      <form class="form">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" placeholder="Nama lengkap sesuai KTP" />
+        </div>
+
+        <div class="form-group">
+          <label>NIK</label>
+          <input type="text" placeholder="16 digit NIK" />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="email@contoh.com" />
+        </div>
+
+        <div class="form-group">
+          <label>Nomor HP</label>
+          <input type="text" placeholder="08xxxxxxxxxx" />
+        </div>
+
+        <div class="form-group">
+          <label>Alamat</label>
+          <textarea rows="3" placeholder="Alamat lengkap"></textarea>
+        </div>
+      </form>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-const API_BASE = `${import.meta.env.VITE_API_URL}/api/profile`
-
-interface ProfileData {
-  namaLengkap: string
-  email: string
-  nik: string
-  ttl: string
-  jenisKelamin: string
-  agama: string
-  alamat: string
-  nomorHp: string
-  pendidikan: string
-  pengalamanKerja: string
-  keahlian: string
-  statusPernikahan: string
-  kewarganegaraan: string
-}
-
-const profileFields = [
-  { label: 'Nama Lengkap', key: 'namaLengkap' },
-  { label: 'Email', key: 'email' },
-  { label: 'NIK', key: 'nik' },
-  { label: 'Tempat, Tanggal Lahir', key: 'ttl' },
-  { label: 'Jenis Kelamin', key: 'jenisKelamin' },
-  { label: 'Agama', key: 'agama' },
-  { label: 'Alamat', key: 'alamat' },
-  { label: 'Nomor HP', key: 'nomorHp' },
-  { label: 'Pendidikan', key: 'pendidikan' },
-  { label: 'Pengalaman Kerja', key: 'pengalamanKerja' },
-  { label: 'Keahlian', key: 'keahlian' },
-  { label: 'Status Pernikahan', key: 'statusPernikahan' },
-  { label: 'Kewarganegaraan', key: 'kewarganegaraan' },
-] as const
-
-const profilEditable = ref<ProfileData>({
-  namaLengkap: '',
-  email: '',
-  nik: '',
-  ttl: '',
-  jenisKelamin: '',
-  agama: '',
-  alamat: '',
-  nomorHp: '',
-  pendidikan: '',
-  pengalamanKerja: '',
-  keahlian: '',
-  statusPernikahan: '',
-  kewarganegaraan: '',
-})
-
-const isEditing = ref(false)
-const loading = ref(false)
-
-async function apiFetch(url: string, method: string, body?: unknown) {
-  const token = localStorage.getItem('token')
-  if (!token) throw new Error('TOKEN TIDAK ADA')
-
-  const res = await fetch(url, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  })
-
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'API Error')
-  return data
-}
-
-const loadProfile = async () => {
-  const data = await apiFetch(API_BASE, 'GET')
-  profileFields.forEach((f) => {
-    profilEditable.value[f.key] = data?.[f.key] ?? ''
-  })
-}
-
-const saveProfile = async () => {
-  loading.value = true
-  await apiFetch(API_BASE, 'POST', profilEditable.value)
-  loading.value = false
-  alert('Profil berhasil disimpan')
-}
-
-const toggleEdit = async () => {
-  if (isEditing.value) await saveProfile()
-  isEditing.value = !isEditing.value
-}
-
-onMounted(loadProfile)
+// form logic nanti bisa ditambah
 </script>
 
 <style scoped>
-/* ================= HERO ================= */
-.hero {
+/* ================= HEADER ================= */
+.header {
   position: relative;
   background: linear-gradient(135deg, #2563eb, #1e40af);
-  padding: 3.5rem 1.5rem 7rem;
-}
-
-.hero-inner {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.hero-text {
-  max-width: 600px;
-}
-
-.title {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 800;
+  padding: 2.8rem 1.5rem 6.5rem;
   color: #fff;
 }
 
-.subtitle {
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* FADE */
-.hero-fade {
+.breadcrumb {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.page-title {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  margin-top: 0.5rem;
+}
+
+.page-desc {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.header-fade {
   position: absolute;
   bottom: 0;
-  inset-inline: 0;
-  height: 140px;
+  left: 0;
+  right: 0;
+  height: 120px;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 40%,
+    rgba(255, 255, 255, 0.4) 45%,
     #ffffff 100%
   );
-}
-
-/* ================= BUTTON ================= */
-.btn-primary {
-  background: #ffffff;
-  color: #1e3a8a;
-  padding: 0.7rem 2.2rem;
-  border-radius: 16px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
 }
 
 /* ================= CONTENT ================= */
@@ -213,70 +110,79 @@ onMounted(loadProfile)
 
 .card {
   background: #ffffff;
-  border-radius: 26px;
-  padding: 2.2rem;
+  border-radius: 24px;
+  padding: 2.5rem;
   box-shadow: 0 30px 60px rgba(37, 99, 235, 0.25);
 }
 
-.card-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #1e40af;
-  margin-bottom: 1.8rem;
-}
-
-/* ================= GRID ================= */
-.grid {
+/* ================= PROGRESS ================= */
+.progress {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2.2rem;
 }
 
-/* ================= FIELD ================= */
-.field-row {
+.progress span {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.progress span.active {
+  background: #2563eb;
+}
+
+/* ================= STEP TITLE ================= */
+.step-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+}
+
+/* ================= FORM ================= */
+.form {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  border: 1.5px solid #bfdbfe;
-  border-radius: 16px;
-  padding: 0.85rem 1rem;
-  background: #f9fbff;
+  gap: 1.4rem;
 }
 
-.field-label {
-  font-size: 0.7rem;
-  font-weight: 800;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #1e40af;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
-.field-value {
-  font-size: 0.95rem;
-  color: #0f172a;
-}
-
-.field-input {
+.form-group input,
+.form-group textarea {
   width: 100%;
-  border: none;
-  border-bottom: 2px solid #2563eb;
-  background: transparent;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1.5px solid #c7d2fe;
   font-size: 0.95rem;
   outline: none;
-  padding: 0.25rem 0;
 }
 
-/* ================= TABLET ================= */
-@media (min-width: 640px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.8rem;
   }
-}
 
-/* ================= DESKTOP ================= */
-@media (min-width: 1024px) {
-  .hero-inner {
-    align-items: center;
+  .step-title {
+    font-size: 1.2rem;
   }
 }
 </style>
