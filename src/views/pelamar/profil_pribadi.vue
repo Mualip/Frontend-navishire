@@ -176,8 +176,8 @@ onMounted(loadProfile)
   z-index: 10;
   background: #ffffff;
   max-width: 72rem;
-  margin: -4rem auto 2rem; /* ⬅️ naik ke atas */
-  padding: 2rem;
+  margin: -7rem auto 2rem; /* ⬅️ naik ke atas */
+  padding: 10rem;
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
   transition: all 0.25s ease;
