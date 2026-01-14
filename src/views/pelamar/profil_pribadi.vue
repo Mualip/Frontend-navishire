@@ -151,9 +151,9 @@ onMounted(loadProfile)
 .header-wrapper {
   position: relative;
   z-index: 1;
-  max-width: 72rem;
+  max-width: 80rem; /* sebelumnya 72rem */
   margin: auto;
-  padding: 0 1.5rem;
+  padding: 0 2.5rem; /* tambah padding */
 }
 
 .title {
@@ -187,9 +187,9 @@ onMounted(loadProfile)
   position: relative;
   z-index: 10;
   background: #ffffff;
-  max-width: 72rem;
+  max-width: 80rem; /* sama biar sejajar */
   margin: -10rem auto 2.5rem;
-  padding: 2.2rem;
+  padding: 2.5rem; /* lebih lega */
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
 }
@@ -244,16 +244,23 @@ input:focus {
 }
 
 /* ================= RESPONSIVE ================= */
-@media (min-width: 768px) {
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 640px) {
+  .hero-blue {
+    height: 20rem; /* sebelumnya 26rem, terlalu tinggi */
+  }
+
   .card-wrapper {
-    margin: -8rem 1rem 2rem;
-    padding: 1.6rem;
+    margin: -5rem 1rem 2rem; /* sebelumnya -8rem */
+    padding: 1.4rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .btn-edit {
+    width: 100%;
+    text-align: center;
   }
 }
 </style>
