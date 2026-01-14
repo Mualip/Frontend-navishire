@@ -2,17 +2,16 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-inner">
-      <div>
+      <div class="hero-text">
         <h1 class="title">Profil Pribadi</h1>
         <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
       </div>
 
       <button class="btn-primary" @click="toggleEdit" :disabled="loading">
-        {{ isEditing ? 'Simpan' : 'Edit Profil' }}
+        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
       </button>
     </div>
 
-    <!-- SMOOTH BLUR TRANSITION -->
     <div class="hero-fade"></div>
   </section>
 
@@ -23,7 +22,9 @@
 
       <div class="grid">
         <div v-for="field in profileFields" :key="field.key" class="field-row">
-          <div class="field-label">{{ field.label }}</div>
+          <label class="field-label">
+            {{ field.label }}
+          </label>
 
           <input
             v-if="isEditing"
@@ -143,93 +144,102 @@ onMounted(loadProfile)
 .hero {
   position: relative;
   background: linear-gradient(135deg, #2563eb, #1e40af);
-  padding: 3rem 1.5rem 6rem;
+  padding: 3.5rem 1.5rem 7rem;
 }
 
 .hero-inner {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
+}
+
+.hero-text {
+  max-width: 600px;
 }
 
 .title {
-  font-size: 2.4rem;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 800;
   color: #fff;
 }
 
 .subtitle {
   margin-top: 0.5rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* BLUR TRANSITION */
+/* FADE */
 .hero-fade {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
+  inset-inline: 0;
+  height: 140px;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.15) 30%,
-    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0.3) 40%,
     #ffffff 100%
   );
-  backdrop-filter: blur(6px);
 }
 
 /* ================= BUTTON ================= */
 .btn-primary {
   background: #ffffff;
   color: #1e3a8a;
-  padding: 0.6rem 2rem;
-  border-radius: 14px;
+  padding: 0.7rem 2.2rem;
+  border-radius: 16px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
 }
 
 /* ================= CONTENT ================= */
 .content {
-  max-width: 1300px;
-  margin: -3rem auto 3rem;
+  max-width: 1200px;
+  margin: -4rem auto 3rem;
   padding: 0 1.5rem;
 }
 
 .card {
   background: #ffffff;
-  border-radius: 22px;
+  border-radius: 26px;
   padding: 2.2rem;
-  box-shadow: 0 25px 45px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.25);
 }
 
 .card-title {
   font-size: 1.3rem;
   font-weight: 800;
   color: #1e40af;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
 }
 
 /* ================= GRID ================= */
 .grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
-/* ================= FIELD ROW ================= */
+/* ================= FIELD ================= */
 .field-row {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   border: 1.5px solid #bfdbfe;
-  border-radius: 14px;
-  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
   background: #f9fbff;
 }
 
@@ -238,6 +248,7 @@ onMounted(loadProfile)
   font-weight: 800;
   color: #1e40af;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .field-value {
@@ -255,17 +266,17 @@ onMounted(loadProfile)
   padding: 0.25rem 0;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  .hero-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+/* ================= TABLET ================= */
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .field-row {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
+/* ================= DESKTOP ================= */
+@media (min-width: 1024px) {
+  .hero-inner {
+    align-items: center;
   }
 }
 </style>
