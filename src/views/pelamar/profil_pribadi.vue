@@ -11,10 +11,14 @@
 
   <!-- ================= CARD ================= -->
   <div class="card-wrapper">
-    <h2 class="section-title">Informasi Pribadi</h2>
-    <button class="btn-edit" @click="toggleEdit" :disabled="loading">
-      {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
-    </button>
+    <!-- HEADER CARD -->
+    <div class="card-header">
+      <h2 class="section-title">Informasi Pribadi</h2>
+
+      <button class="btn-edit" @click="toggleEdit" :disabled="loading">
+        {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
+      </button>
+    </div>
 
     <div class="form-grid">
       <div v-for="field in profileFields" :key="field.key" class="form-group">
@@ -136,24 +140,22 @@ onMounted(loadProfile)
 .hero-section {
   position: relative;
   padding-top: 1.5rem;
-  padding-bottom: 6rem;
+  padding-bottom: 7.5rem; /* ⬅️ tambah agar card tidak ketiban */
 }
 
 .hero-blue {
   position: absolute;
   inset: 0;
-  height: 26rem;
+  height: 24rem; /* ⬅️ lebih pendek untuk desktop */
   background: linear-gradient(180deg, #2563eb 0%, #3b82f6 40%, #eff6ff 100%);
   border-radius: 0 0 1.5rem 1.5rem;
-  z-index: 0;
 }
 
 .header-wrapper {
   position: relative;
-  z-index: 1;
-  max-width: 80rem; /* sebelumnya 72rem */
+  max-width: 82rem;
   margin: auto;
-  padding: 0 2.5rem; /* tambah padding */
+  padding: 0 2rem; /* ⬅️ padding kiri kanan dikurangi */
 }
 
 .title {
@@ -168,37 +170,42 @@ onMounted(loadProfile)
   max-width: 36rem;
 }
 
-.btn-edit {
-  margin-top: 1.2rem;
-  background: #ffffff;
-  color: #1e40af;
-  padding: 0.65rem 1.6rem;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  transition: all 0.25s ease;
-}
-.btn-edit:hover {
-  transform: translateY(-2px);
-}
-
 /* ================= CARD ================= */
 .card-wrapper {
   position: relative;
-  z-index: 10;
   background: #ffffff;
-  max-width: 80rem; /* sama biar sejajar */
-  margin: -10rem auto 2.5rem;
-  padding: 2.5rem; /* lebih lega */
+  max-width: 82rem;
+  margin: -7rem auto 2.5rem; /* ⬅️ TURUN LAGI (inti masalah) */
+  padding: 2.2rem;
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
+}
+
+/* HEADER CARD */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
 }
 
 .section-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: #1e3a8a;
-  margin-bottom: 1.6rem;
+}
+
+.btn-edit {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.55rem 1.4rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+.btn-edit:hover {
+  background: #1e40af;
 }
 
 /* ================= FORM ================= */
@@ -226,13 +233,6 @@ input {
   border-radius: 0.75rem;
   border: 1px solid #cbd5e1;
   background: #f9fafb;
-  transition: all 0.25s ease;
-}
-
-input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-  outline: none;
 }
 
 .value-box {
@@ -240,27 +240,36 @@ input:focus {
   background: #f1f5f9;
   border-radius: 0.75rem;
   font-size: 0.9rem;
-  color: #0f172a;
 }
 
 /* ================= RESPONSIVE ================= */
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 640px) {
   .hero-blue {
-    height: 20rem; /* sebelumnya 26rem, terlalu tinggi */
+    height: 20rem;
   }
 
   .card-wrapper {
-    margin: -5rem 1rem 2rem; /* sebelumnya -8rem */
+    margin: -5rem 1rem 2rem;
     padding: 1.4rem;
   }
 
-  .title {
-    font-size: 1.5rem;
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .btn-edit {
     width: 100%;
-    text-align: center;
+  }
+
+  .title {
+    font-size: 1.5rem;
   }
 }
 </style>
