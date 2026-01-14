@@ -176,7 +176,7 @@ onMounted(loadProfile)
   z-index: 10;
   background: #ffffff;
   max-width: 72rem;
-  margin: 20px;
+  margin: 10px;
   padding: 2rem;
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
