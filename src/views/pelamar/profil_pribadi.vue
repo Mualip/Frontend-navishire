@@ -15,7 +15,7 @@
     <div class="card-header">
       <h2 class="section-title">Informasi Pribadi</h2>
 
-      <button class="btn-edit" @click="toggleEdit" :disabled="loading">
+      <button class="btn-edit" @click="isEditing ? saveProfile() : startEdit()" :disabled="loading">
         {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
       </button>
     </div>
@@ -42,8 +42,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
+/* ================= API ================= */
 const API_BASE = `${import.meta.env.VITE_API_URL}/api/profile`
 
+/* ================= TYPE ================= */
 interface ProfileData {
   namaLengkap: string
   email: string
@@ -60,7 +62,15 @@ interface ProfileData {
   kewarganegaraan: string
 }
 
-const profileFields = [
+type ProfileKey = keyof ProfileData
+
+interface ProfileField {
+  label: string
+  key: ProfileKey
+}
+
+/* ================= FIELDS ================= */
+const profileFields: readonly ProfileField[] = [
   { label: 'Nama Lengkap', key: 'namaLengkap' },
   { label: 'Email', key: 'email' },
   { label: 'NIK', key: 'nik' },
@@ -74,8 +84,9 @@ const profileFields = [
   { label: 'Keahlian', key: 'keahlian' },
   { label: 'Status Pernikahan', key: 'statusPernikahan' },
   { label: 'Kewarganegaraan', key: 'kewarganegaraan' },
-] as const
+]
 
+/* ================= STATE ================= */
 const profilEditable = ref<ProfileData>({
   namaLengkap: '',
   email: '',
@@ -92,12 +103,15 @@ const profilEditable = ref<ProfileData>({
   kewarganegaraan: '',
 })
 
-const isEditing = ref(false)
-const loading = ref(false)
+const isEditing = ref<boolean>(false)
+const loading = ref<boolean>(false)
 
-async function apiFetch(url: string, method: string, body?: unknown) {
+/* ================= API HELPER ================= */
+async function apiFetch<T>(url: string, method: 'GET' | 'POST', body?: ProfileData): Promise<T> {
   const token = localStorage.getItem('token')
-  if (!token) throw new Error('TOKEN TIDAK ADA')
+  if (!token) {
+    throw new Error('TOKEN TIDAK ADA')
+  }
 
   const res = await fetch(url, {
     method,
@@ -108,28 +122,47 @@ async function apiFetch(url: string, method: string, body?: unknown) {
     body: body ? JSON.stringify(body) : undefined,
   })
 
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.message || 'API Error')
+  const data: T = await res.json()
+
+  if (!res.ok) {
+    throw new Error(
+      typeof data === 'object' && data !== null && 'message' in data
+        ? String((data as { message: unknown }).message)
+        : 'API Error',
+    )
+  }
+
   return data
 }
 
-const loadProfile = async () => {
-  const data = await apiFetch(API_BASE, 'GET')
-  profileFields.forEach((f) => {
-    profilEditable.value[f.key] = data?.[f.key] ?? ''
+/* ================= LOGIC ================= */
+const loadProfile = async (): Promise<void> => {
+  const data = await apiFetch<Partial<ProfileData>>(API_BASE, 'GET')
+
+  profileFields.forEach((field) => {
+    profilEditable.value[field.key] = data[field.key] ?? ''
   })
 }
 
-const saveProfile = async () => {
-  loading.value = true
-  await apiFetch(API_BASE, 'POST', profilEditable.value)
-  loading.value = false
-  alert('Profil berhasil disimpan')
+const startEdit = (): void => {
+  isEditing.value = true
 }
 
-const toggleEdit = async () => {
-  if (isEditing.value) await saveProfile()
-  isEditing.value = !isEditing.value
+const saveProfile = async (): Promise<void> => {
+  try {
+    loading.value = true
+    await apiFetch<void>(API_BASE, 'POST', profilEditable.value)
+    alert('Profil berhasil disimpan')
+    isEditing.value = false
+  } catch (err) {
+    if (err instanceof Error) {
+      alert(err.message)
+    } else {
+      alert('Gagal menyimpan profil')
+    }
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(loadProfile)
@@ -140,13 +173,13 @@ onMounted(loadProfile)
 .hero-section {
   position: relative;
   padding-top: 1.5rem;
-  padding-bottom: 7.5rem; /* ⬅️ tambah agar card tidak ketiban */
+  padding-bottom: 7.5rem;
 }
 
 .hero-blue {
   position: absolute;
   inset: 0;
-  height: 24rem; /* ⬅️ lebih pendek untuk desktop */
+  height: 24rem;
   background: linear-gradient(180deg, #2563eb 0%, #3b82f6 40%, #eff6ff 100%);
   border-radius: 0 0 1.5rem 1.5rem;
 }
@@ -155,7 +188,7 @@ onMounted(loadProfile)
   position: relative;
   max-width: 82rem;
   margin: auto;
-  padding: 0 2rem; /* ⬅️ padding kiri kanan dikurangi */
+  padding: 0 2rem;
 }
 
 .title {
@@ -177,7 +210,7 @@ onMounted(loadProfile)
   background: #ffffff;
   max-width: 72rem;
   margin: -6rem auto 2rem;
-  padding: 2rem 2.5rem; /* ⬅️ kanan kiri diperbesar */
+  padding: 2rem 2.5rem;
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
 }
@@ -203,7 +236,6 @@ onMounted(loadProfile)
   padding: 0.55rem 1.4rem;
   border-radius: 0.6rem;
   font-weight: 600;
-  transition: all 0.25s ease;
 }
 .btn-edit:hover {
   background: #1e40af;
