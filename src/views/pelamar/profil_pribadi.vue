@@ -1,46 +1,39 @@
 <template>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1 class="title">Profil Pribadi</h1>
-        <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
-      </div>
+  <!-- ================= HERO ================= -->
+  <section class="hero-section">
+    <div class="hero-blue"></div>
 
-      <button class="btn-primary" @click="toggleEdit" :disabled="loading">
+    <header class="header-wrapper">
+      <h1 class="title">Profil Pribadi</h1>
+      <p class="subtitle">Informasi lengkap mengenai data diri pelamar</p>
+
+      <button class="btn-edit" @click="toggleEdit" :disabled="loading">
         {{ isEditing ? 'Simpan Perubahan' : 'Edit Profil' }}
       </button>
-    </div>
-
-    <div class="hero-fade"></div>
+    </header>
   </section>
 
-  <!-- CONTENT -->
-  <section class="content">
-    <div class="card">
-      <h2 class="card-title">Informasi Pribadi</h2>
+  <!-- ================= CARD ================= -->
+  <div class="card-wrapper">
+    <h2 class="section-title">Informasi Pribadi</h2>
 
-      <div class="grid">
-        <div v-for="field in profileFields" :key="field.key" class="field-row">
-          <label class="field-label">
-            {{ field.label }}
-          </label>
+    <div class="form-grid">
+      <div v-for="field in profileFields" :key="field.key" class="form-group">
+        <label>{{ field.label }}</label>
 
-          <input
-            v-if="isEditing"
-            v-model="profilEditable[field.key]"
-            class="field-input"
-            type="text"
-            placeholder="Isi data..."
-          />
+        <input
+          v-if="isEditing"
+          type="text"
+          v-model="profilEditable[field.key]"
+          placeholder="Isi data..."
+        />
 
-          <div v-else class="field-value">
-            {{ profilEditable[field.key] || '-' }}
-          </div>
+        <div v-else class="value-box">
+          {{ profilEditable[field.key] || '-' }}
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -141,142 +134,126 @@ onMounted(loadProfile)
 
 <style scoped>
 /* ================= HERO ================= */
-.hero {
+.hero-section {
   position: relative;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  padding: 3.5rem 1.5rem 7rem;
+  padding-top: 1.5rem;
 }
 
-.hero-inner {
-  max-width: 1200px;
+.hero-blue {
+  position: absolute;
+  inset: 0;
+  height: 26rem;
+  background: linear-gradient(180deg, #2563eb 0%, #3b82f6 40%, #eff6ff 100%);
+  border-radius: 0 0 1.5rem 1.5rem;
+  z-index: 0;
+}
+
+.header-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 72rem;
   margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.hero-text {
-  max-width: 600px;
+  padding: 0 1.5rem;
 }
 
 .title {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 800;
-  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .subtitle {
   margin-top: 0.5rem;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: #e0e7ff;
+  max-width: 36rem;
 }
 
-/* FADE */
-.hero-fade {
-  position: absolute;
-  bottom: 0;
-  inset-inline: 0;
-  height: 140px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 40%,
-    #ffffff 100%
-  );
-}
-
-/* ================= BUTTON ================= */
-.btn-primary {
+.btn-edit {
+  margin-top: 1.2rem;
   background: #ffffff;
-  color: #1e3a8a;
-  padding: 0.7rem 2.2rem;
-  border-radius: 16px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-  transition: all 0.2s ease;
+  color: #1e40af;
+  padding: 0.65rem 1.6rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
 }
-
-.btn-primary:hover {
+.btn-edit:hover {
   transform: translateY(-2px);
 }
 
-/* ================= CONTENT ================= */
-.content {
-  max-width: 1200px;
-  margin: -4rem auto 3rem;
-  padding: 0 1.5rem;
-}
-
-.card {
+/* ================= CARD ================= */
+.card-wrapper {
+  position: relative;
+  z-index: 10;
   background: #ffffff;
-  border-radius: 26px;
+  max-width: 72rem;
+  margin: -10rem auto 2.5rem;
   padding: 2.2rem;
-  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
 }
 
-.card-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #1e40af;
-  margin-bottom: 1.8rem;
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1.6rem;
 }
 
-/* ================= GRID ================= */
-.grid {
+/* ================= FORM ================= */
+.form-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-/* ================= FIELD ================= */
-.field-row {
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  border: 1.5px solid #bfdbfe;
-  border-radius: 16px;
-  padding: 0.85rem 1rem;
-  background: #f9fbff;
+  gap: 0.4rem;
 }
 
-.field-label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: #1e40af;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e3a8a;
 }
 
-.field-value {
-  font-size: 0.95rem;
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #cbd5e1;
+  background: #f9fafb;
+  transition: all 0.25s ease;
+}
+
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+.value-box {
+  padding: 0.75rem 1rem;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
   color: #0f172a;
 }
 
-.field-input {
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid #2563eb;
-  background: transparent;
-  font-size: 0.95rem;
-  outline: none;
-  padding: 0.25rem 0;
-}
-
-/* ================= TABLET ================= */
-@media (min-width: 640px) {
-  .grid {
+/* ================= RESPONSIVE ================= */
+@media (min-width: 768px) {
+  .form-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* ================= DESKTOP ================= */
-@media (min-width: 1024px) {
-  .hero-inner {
-    align-items: center;
+@media (max-width: 640px) {
+  .card-wrapper {
+    margin: -8rem 1rem 2rem;
+    padding: 1.6rem;
   }
 }
 </style>
