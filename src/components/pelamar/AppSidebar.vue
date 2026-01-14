@@ -60,7 +60,7 @@
 
         <transition name="fade-slide">
           <ul v-if="openDropdown" class="submenu">
-            <li>
+            <!-- <li>
               <RouterLink
                 to="/pelamar/settings"
                 class="submenu-item"
@@ -69,7 +69,7 @@
               >
                 Akun & Profil
               </RouterLink>
-            </li>
+            </li> -->
 
             <li>
               <button class="submenu-item logout" @click="logout">Logout</button>
