@@ -176,11 +176,10 @@ onMounted(loadProfile)
   z-index: 10;
   background: #ffffff;
   max-width: 72rem;
-  margin: -7rem auto 2rem; /* ⬅️ naik ke atas */
-  padding: 10rem;
+  margin: -6rem auto 2rem;
+  padding: 2rem 2.5rem; /* ⬅️ kanan kiri diperbesar */
   border-radius: 18px;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.15);
-  transition: all 0.25s ease;
 }
 
 /* HEADER CARD */
